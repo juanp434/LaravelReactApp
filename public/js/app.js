@@ -65981,8 +65981,19 @@ var Producto = /*#__PURE__*/function (_Component) {
     _this.state = {
       producto: [],
       productoBackup: [],
-      textBuscar: ''
-    };
+      textBuscar: "",
+      formNombre: "",
+      formDescripcion: "",
+      formPrecio: "",
+      formCantidad: "",
+      idProducto: 0,
+      edit: false
+    }; // funciones de onchange de los campos en  el formulario
+
+    _this.handleChangeNombre = _this.handleChangeNombre.bind(_assertThisInitialized(_this));
+    _this.handleChangeDescp = _this.handleChangeDescp.bind(_assertThisInitialized(_this));
+    _this.handleChangePreci = _this.handleChangePreci.bind(_assertThisInitialized(_this));
+    _this.handleChangeCantidad = _this.handleChangeCantidad.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -66003,10 +66014,28 @@ var Producto = /*#__PURE__*/function (_Component) {
   }, {
     key: "listData",
     value: function listData() {
+      var _this3 = this;
+
       return this.state.producto.map(function (data) {
         return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", {
           key: data.id
-        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, data.titulo), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, data.descripcion), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "$ ", data.precio));
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, data.titulo), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, data.descripcion), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "$ ", data.precio), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, data.cantidad), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+          className: "btn-group",
+          role: "group",
+          "aria-label": "Button group example"
+        }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          className: "btn btn-info",
+          type: "button",
+          onClick: function onClick() {
+            return _this3.showModalEdit(data);
+          }
+        }, "Editar"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+          className: "btn btn-danger",
+          type: "button",
+          onClick: function onClick() {
+            return _this3.showModalDelete(data);
+          }
+        }, "Eliminar"))));
       });
     }
   }, {
@@ -66030,26 +66059,287 @@ var Producto = /*#__PURE__*/function (_Component) {
         producto: newData,
         textBuscar: text
       });
+    } // campo de nombre
+
+  }, {
+    key: "handleChangeNombre",
+    value: function handleChangeNombre(event) {
+      this.setState({
+        formNombre: event.target.value
+      });
+    } // campo de descripcion
+
+  }, {
+    key: "handleChangeDescp",
+    value: function handleChangeDescp(event) {
+      this.setState({
+        formDescripcion: event.target.value
+      });
+    } // campo de precio
+
+  }, {
+    key: "handleChangePreci",
+    value: function handleChangePreci(event) {
+      this.setState({
+        formPrecio: event.target.value
+      });
+    } // campo de cantidad
+
+  }, {
+    key: "handleChangeCantidad",
+    value: function handleChangeCantidad(event) {
+      this.setState({
+        formCantidad: event.target.value
+      });
+    }
+  }, {
+    key: "showModalEdit",
+    value: function showModalEdit(data) {
+      this.setState({
+        idProducto: data.id,
+        formNombre: data.titulo,
+        formDescripcion: data.descripcion,
+        formPrecio: data.precio,
+        formCantidad: data.cantidad,
+        edit: true
+      });
+      $("#exampleModal").modal("show");
+    }
+  }, {
+    key: "showModalCreate",
+    value: function showModalCreate() {
+      this.setState({
+        idProducto: 0,
+        formNombre: "",
+        formDescripcion: "",
+        formPrecio: "",
+        formCantidad: "",
+        edit: false
+      });
+      $("#exampleModal").modal("show");
+    }
+  }, {
+    key: "showModalDelete",
+    value: function showModalDelete(data) {
+      this.setState({
+        idProducto: data.id
+      });
+      $("#exampleModalDelete").modal("show");
+    }
+  }, {
+    key: "sendNetworkProduct",
+    value: function sendNetworkProduct() {
+      var _this4 = this;
+
+      var formData = new FormData();
+      formData.append("nombre", this.state.formNombre);
+      formData.append("descripcion", this.state.formDescripcion);
+      formData.append("precio", this.state.formPrecio);
+      formData.append("cantidad", this.state.formCantidad);
+      axios.post(baseUrl + "api/producto/create", formData).then(function (response) {
+        if (response.data.success == true) {
+          //alert(response.data.message);
+          // cargar datos de nuevo
+          _this4.componentDidMount(); // para cerrar el modal
+
+
+          $("#exampleModal").modal("hide");
+        }
+      })["catch"](function (error) {
+        alert("Error " + error);
+      });
+    }
+  }, {
+    key: "sendNetworkUpdate",
+    value: function sendNetworkUpdate(data) {
+      var _this5 = this;
+
+      var formData = new FormData();
+      formData.append("id", this.state.idProducto);
+      formData.append("nombre", this.state.formNombre);
+      formData.append("descripcion", this.state.formDescripcion);
+      formData.append("precio", this.state.formPrecio);
+      formData.append("cantidad", this.state.formCantidad);
+      axios.post(baseUrl + "api/producto/update", formData).then(function (response) {
+        if (response.data.success == true) {
+          //alert(response.data.message);
+          // cargar datos de nuevo
+          _this5.componentDidMount(); // para cerrar el modal
+
+
+          $("#exampleModal").modal("hide");
+        }
+      })["catch"](function (error) {
+        alert("Error " + error);
+      });
+    }
+  }, {
+    key: "sendNetworkDelete",
+    value: function sendNetworkDelete() {
+      var _this6 = this;
+
+      var formData = new FormData();
+      formData.append("id", this.state.idProducto);
+      axios.post(baseUrl + "api/producto/delete", formData).then(function (response) {
+        if (response.data.success == true) {
+          //alert(response.data.message);
+          // cargar datos de nuevo
+          _this6.componentDidMount(); // para cerrar el modal
+
+
+          $("#exampleModalDelete").modal("hide");
+        }
+      })["catch"](function (error) {
+        alert("Error " + error);
+      });
     }
   }, {
     key: "render",
     value: function render() {
-      var _this3 = this;
+      var _this7 = this;
 
       return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
         className: "container"
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Laravel y React APIRest"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
-        className: "form-control col-md-4",
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h3", null, "Laravel y React APIRest"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("hr", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "row"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        className: "form-control col-md-8",
         placeholder: "Buscar",
         value: this.state.textBuscar,
         onChange: function onChange(textBuscar) {
-          return _this3.filter(textBuscar);
+          return _this7.filter(textBuscar);
         }
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        className: "btn btn-primary col-md-4",
+        "data-toggle": "modal",
+        "data-target": "#exampleModal",
+        onClick: function onClick() {
+          return _this7.showModalCreate();
+        }
+      }, "Crear producto")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("br", null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("table", {
         className: "table table-bordered order-table "
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Producto"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Descripcion"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Precio"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", {
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("thead", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tr", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Producto"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Descripcion"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Precio"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Cantidad"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("th", null, "Acciones"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("tbody", {
         id: "bodytable"
-      }, this.listData())));
+      }, this.listData())), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "modal fade",
+        id: "exampleModalDelete",
+        tabIndex: "-1",
+        role: "dialog",
+        "aria-labelledby": "exampleModalLabel",
+        "aria-hidden": "true"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "modal-dialog",
+        role: "document"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "modal-content"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "modal-header"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+        className: "modal-title",
+        id: "exampleModalLabel"
+      }, "Eliminar"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        className: "close",
+        "data-dismiss": "modal",
+        "aria-label": "Close"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        "aria-hidden": "true"
+      }, "\xD7"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "modal-body"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, "Desea eliminar el producto?")), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "modal-footer"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        className: "btn btn-secondary",
+        "data-dismiss": "modal"
+      }, "Cancelar"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        className: "btn btn-danger",
+        onClick: function onClick() {
+          return _this7.sendNetworkDelete();
+        }
+      }, "Eliminar"))))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "modal fade",
+        id: "exampleModal",
+        tabIndex: "-1",
+        role: "dialog",
+        "aria-labelledby": "exampleModalLabel",
+        "aria-hidden": "true"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "modal-dialog",
+        role: "document"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "modal-content"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "modal-header"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h5", {
+        className: "modal-title",
+        id: "exampleModalLabel"
+      }, "Formulario de producto"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        className: "close",
+        "data-dismiss": "modal",
+        "aria-label": "Close"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", {
+        "aria-hidden": "true"
+      }, "\xD7"))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "modal-body"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        htmlFor: "exampleInputEmail1"
+      }, "Nombre de producto", " "), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "text",
+        className: "form-control",
+        value: this.state.formNombre,
+        onChange: this.handleChangeNombre
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        htmlFor: "exampleInputEmail1"
+      }, "Descripcion de producto"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("textarea", {
+        className: "form-control",
+        rows: "3",
+        value: this.state.formDescripcion,
+        onChange: this.handleChangeDescp
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        htmlFor: "exampleInputEmail1"
+      }, "Precio"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "number",
+        className: "form-control",
+        value: this.state.formPrecio,
+        onChange: this.handleChangePreci
+      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "form-group"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", {
+        htmlFor: "exampleInputEmail1"
+      }, "Cantidad"), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+        type: "number",
+        className: "form-control",
+        value: this.state.formCantidad,
+        onChange: this.handleChangeCantidad
+      }))), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+        className: "modal-footer"
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        className: "btn btn-secondary",
+        "data-dismiss": "modal"
+      }, "Cancelar"), this.state.edit ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        className: "btn btn-primary",
+        onClick: function onClick() {
+          return _this7.sendNetworkUpdate();
+        }
+      }, "Actualizar") : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+        type: "button",
+        className: "btn btn-primary",
+        onClick: function onClick() {
+          return _this7.sendNetworkProduct();
+        }
+      }, "Guardar")))))));
     }
   }]);
 

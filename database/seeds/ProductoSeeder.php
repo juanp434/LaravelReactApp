@@ -43,3 +43,4 @@ class ProductoSeeder extends Seeder
         );
     }
 }
+
