@@ -14,11 +14,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::get('producto/list', 'API\ControllerProduct@get_all');
 Route::post('producto/create', 'API\ControllerProduct@create');
 Route::post('producto/update', 'API\ControllerProduct@update');
 Route::post('producto/delete', 'API\ControllerProduct@delete');
+
+Route::get('wallet', 'API\WalletController@index');
+
+Route::post('transfer', 'API\TransferController@store');

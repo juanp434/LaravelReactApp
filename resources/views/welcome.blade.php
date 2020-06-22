@@ -9,7 +9,7 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-
+    <link rel="stylesheet" href="css/app.css">
     <!-- Styles -->
     <style>
         html,
@@ -71,13 +71,9 @@
 
 
         <div class="content">
-            <div class="title m-b-md">
-                <app />
-            </div>
-
-            <div id="componente"></div>
+            <div id="example"></div>
+            
             <script src="{{ asset('js/app.js') }}"></script>
-
         </div>
     </div>
 </body>
