@@ -13,7 +13,7 @@
   <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 
   <div id="producto"></div>
-  <script src="{{ asset('js/app.js') }}"></script>
+  <script src="{{ secure_asset('js/app.js') }}"></script>
 
 
 </body>
