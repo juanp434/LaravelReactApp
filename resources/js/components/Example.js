@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import ReactDOM from "react-dom"
 import TransferForm from "./TransferForm"
 import TransferList from "./TransferList"
-import url from './url'
+import url from '../url'
 
 export default class Example extends Component {
     constructor(props) {
