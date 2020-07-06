@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Axios from "axios";
+import url from "../url"
 
-const baseUrl = "http://localhost:8000/";
+const baseUrl = url;
 
 export default class Producto extends Component {
     constructor(props) {
