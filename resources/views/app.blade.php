@@ -73,6 +73,8 @@
         <div id="app"></div>
         
         <script src="{{ asset('js/app.js') }}"></script>
+        <!-- <script src="{{ secure_asset('js/app.js') }}"></script> -->
+
         <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
         <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     </div>
