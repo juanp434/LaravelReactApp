@@ -4,12 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name=”csrf-token” content=”{{ csrf_token() }}”>
 
     <title>Laravel</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
     <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!-- Styles -->
     <style>
         html,
@@ -67,14 +69,14 @@
 </head>
 
 <body>
-    <div class="flex-center position-ref full-height">
+    <div class="content">
+        <div id="app"></div>
+        
+        <script src="{{ asset('js/app.js') }}"></script>
+        <!-- <script src="{{ secure_asset('js/app.js') }}"></script> -->
 
-
-        <div class="content">
-            <div id="example"></div>
-            
-            <script src="{{ secure_asset('js/app.js') }}"></script>
-        </div>
+        <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     </div>
 </body>
 

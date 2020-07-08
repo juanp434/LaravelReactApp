@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Axios from "axios";
-
-const baseUrl = "http://localhost:8000/";
+import url from "../url"
 
 export default class Producto extends Component {
     constructor(props) {
@@ -28,7 +27,7 @@ export default class Producto extends Component {
 
     componentDidMount() {
         axios
-            .get(baseUrl + "api/producto/list")
+            .get( `${url}/api/producto/list`)
             .then(response => {
                 this.setState({
                     producto: response.data,
@@ -154,7 +153,7 @@ export default class Producto extends Component {
         formData.append("cantidad", this.state.formCantidad);
 
         axios
-            .post(baseUrl + "api/producto/create", formData)
+            .post( `${url}/api/producto/create`, formData)
             .then(response => {
                 if (response.data.success == true) {
                     //alert(response.data.message);
@@ -178,7 +177,7 @@ export default class Producto extends Component {
         formData.append("cantidad", this.state.formCantidad);
 
         axios
-            .post(baseUrl + "api/producto/update", formData)
+            .post(`${url}/api/producto/update`, formData)
             .then(response => {
                 if (response.data.success == true) {
                     //alert(response.data.message);
@@ -198,7 +197,7 @@ export default class Producto extends Component {
         formData.append("id", this.state.idProducto);
 
         axios
-            .post(baseUrl + "api/producto/delete", formData)
+            .post(`${url}/api/producto/delete`, formData)
             .then(response => {
                 if (response.data.success == true) {
                     //alert(response.data.message);
@@ -216,9 +215,7 @@ export default class Producto extends Component {
     render() {
         return (
             <div className="container">
-                <h3>Laravel y React APIRest</h3>
-                <hr />
-
+                <br/>
                 <div className="row">
                     <input
                         className="form-control col-md-8"

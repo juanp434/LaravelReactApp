@@ -2,9 +2,9 @@ import React, { Component } from "react"
 import ReactDOM from "react-dom"
 import TransferForm from "./TransferForm"
 import TransferList from "./TransferList"
-import url from './url'
+import url from '../url'
 
-export default class Example extends Component {
+export default class Wallet extends Component {
     constructor(props) {
         super(props);
 
@@ -100,6 +100,6 @@ export default class Example extends Component {
     }
 }
 
-if (document.getElementById("example")) {
-    ReactDOM.render(<Example />, document.getElementById("example"));
+if (document.getElementById("wallet")) {
+    ReactDOM.render(<Wallet />, document.getElementById("wallet"));
 }

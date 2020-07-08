@@ -24,7 +24,7 @@ class ControllerProduct extends Controller
             'titulo' => $request->input('nombre'),
             'descripcion' => $request->input('descripcion'),
             'precio' => $request->input('precio'),
-            'cantidad' => 0,
+            'cantidad' => $request->input('cantidad'),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
         // respuesta JSON
